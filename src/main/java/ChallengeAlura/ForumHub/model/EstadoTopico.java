@@ -1,4 +1,7 @@
 package ChallengeAlura.ForumHub.model;
 
-public class EstadoTopico {
+public enum EstadoTopico {
+    ABERTO,
+    FECHADO,
+    PENDENTE
 }

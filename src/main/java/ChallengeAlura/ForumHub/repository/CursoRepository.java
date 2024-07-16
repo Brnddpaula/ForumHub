@@ -1,4 +1,7 @@
 package ChallengeAlura.ForumHub.repository;
 
-public class CursoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import ChallengeAlura.ForumHub.model.Curso;
+
+public interface CursoRepository extends JpaRepository<Curso, Long> {
 }
