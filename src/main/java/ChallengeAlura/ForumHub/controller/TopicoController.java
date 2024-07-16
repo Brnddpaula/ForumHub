@@ -2,6 +2,7 @@ package ChallengeAlura.ForumHub.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ChallengeAlura.ForumHub.service.TopicoService;
 import ChallengeAlura.ForumHub.model.Topico;
@@ -17,6 +18,7 @@ public class TopicoController {
     private TopicoService topicoService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Topico> criarTopico(@RequestBody Topico topico) {
         Topico novoTopico = topicoService.criarTopico(topico);
         return ResponseEntity.ok(novoTopico);
@@ -34,12 +36,14 @@ public class TopicoController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<Topico> atualizarTopico(@PathVariable Long id, @RequestBody Topico topicoAtualizado) {
         Topico topico = topicoService.atualizarTopico(id, topicoAtualizado);
         return topico != null ? ResponseEntity.ok(topico) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Void> deletarTopico(@PathVariable Long id) {
         topicoService.deletarTopico(id);
         return ResponseEntity.noContent().build();
