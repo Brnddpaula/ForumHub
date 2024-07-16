@@ -1,5 +1,7 @@
 package ChallengeAlura.ForumHub.controller;
 
+import ChallengeAlura.ForumHub.dto.TopicoRequestDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +21,8 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Topico> criarTopico(@RequestBody Topico topico) {
-        Topico novoTopico = topicoService.criarTopico(topico);
+    public ResponseEntity<Topico> criarTopico(@RequestBody @Valid TopicoRequestDTO topicoDTO) {
+        Topico novoTopico = topicoService.criarTopico(topicoDTO);
         return ResponseEntity.ok(novoTopico);
     }
 
