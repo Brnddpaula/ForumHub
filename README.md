@@ -33,37 +33,7 @@ ForumHub é uma API REST para gerenciamento de tópicos em um fórum. O projeto 
 
 ### Dependências
 
-As dependências principais do projeto estão listadas no arquivo `pom.xml`. Aqui estão algumas das dependências mais importantes:
-
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-security</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-</dependency>
-<dependency>
-    <groupId>com.auth0</groupId>
-    <artifactId>java-jwt</artifactId>
-    <version>3.18.1</version>
-</dependency>
-<dependency>
-    <groupId>jakarta.validation</groupId>
-    <artifactId>jakarta.validation-api</artifactId>
-    <version>3.0.2</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate.validator</groupId>
-    <artifactId>hibernate-validator</artifactId>
-    <version>7.0.1.Final</version>
-</dependency>
-```
+As dependências principais do projeto estão listadas no arquivo `pom.xml`. 
 
 
 
