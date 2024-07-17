@@ -8,6 +8,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ChallengeAlura.ForumHub.dto.LoginRequestDTO;
+import ChallengeAlura.ForumHub.service.TokenService;
+import org.springframework.http.ResponseEntity;
 import jakarta.validation.Valid;
 
 @RestController
@@ -17,17 +19,21 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
-    public String login(@RequestBody @Valid LoginRequestDTO loginRequest) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword());
 
         try {
             Authentication auth = authenticationManager.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            return "Login successful";
+            String token = tokenService.gerarToken(loginRequest.getUsername());
+            return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
-            return "Login failed";
+            return ResponseEntity.status(401).body("Login failed");
         }
     }
 }
