@@ -1,15 +1,18 @@
 package ChallengeAlura.ForumHub.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
-import ChallengeAlura.ForumHub.service.TopicoService;
 import ChallengeAlura.ForumHub.dto.TopicoRequestDTO;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ChallengeAlura.ForumHub.service.TopicoService;
 import ChallengeAlura.ForumHub.model.Topico;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,7 +22,6 @@ public class TopicoController {
     @Autowired
     private TopicoService topicoService;
 
-    // Endpoint para criar um novo tópico
     @PostMapping
     @Transactional
     public ResponseEntity<Topico> criarTopico(@RequestBody @Valid TopicoRequestDTO topicoDTO) {
@@ -27,20 +29,21 @@ public class TopicoController {
         return ResponseEntity.ok(novoTopico);
     }
 
-    // Endpoint para listar todos os tópicos
     @GetMapping
-    public List<Topico> listarTopicos() {
-        return topicoService.listarTopicos();
+    public ResponseEntity<Page<Topico>> listarTopicos(
+            @RequestParam(required = false) String curso,
+            @RequestParam(required = false) Integer ano,
+            @PageableDefault(sort = "dataCriacao", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
+        Page<Topico> topicos = topicoService.listarTopicos(curso, ano, pageable);
+        return ResponseEntity.ok(topicos);
     }
 
-    // Endpoint para obter um tópico específico
     @GetMapping("/{id}")
     public ResponseEntity<Topico> obterTopico(@PathVariable Long id) {
         Optional<Topico> topico = topicoService.obterTopicoPorId(id);
         return topico.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Endpoint para atualizar um tópico
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<Topico> atualizarTopico(@PathVariable Long id, @RequestBody @Valid TopicoRequestDTO topicoAtualizadoDTO) {
@@ -48,7 +51,6 @@ public class TopicoController {
         return topicoAtualizado != null ? ResponseEntity.ok(topicoAtualizado) : ResponseEntity.notFound().build();
     }
 
-    // Endpoint para deletar um tópico
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> deletarTopico(@PathVariable Long id) {

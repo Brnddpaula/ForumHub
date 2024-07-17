@@ -1,6 +1,8 @@
 package ChallengeAlura.ForumHub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ChallengeAlura.ForumHub.repository.TopicoRepository;
 import ChallengeAlura.ForumHub.model.Topico;
@@ -12,7 +14,6 @@ import ChallengeAlura.ForumHub.repository.UsuarioRepository;
 import ChallengeAlura.ForumHub.repository.CursoRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,19 +29,16 @@ public class TopicoService {
     private CursoRepository cursoRepository;
 
     public Topico criarTopico(TopicoRequestDTO topicoDTO) {
-        // Verificar se já existe um tópico com o mesmo título e mensagem
         Optional<Topico> existente = topicoRepository.findByTituloAndMensagem(topicoDTO.getTitulo(), topicoDTO.getMensagem());
         if (existente.isPresent()) {
             throw new IllegalArgumentException("Tópico duplicado: título e mensagem já existem.");
         }
 
-        // Obter autor e curso
         Usuario autor = usuarioRepository.findById(topicoDTO.getAutorId())
                 .orElseThrow(() -> new IllegalArgumentException("Autor não encontrado"));
         Curso curso = cursoRepository.findById(topicoDTO.getCursoId())
                 .orElseThrow(() -> new IllegalArgumentException("Curso não encontrado"));
 
-        // Criar e salvar o tópico
         Topico topico = new Topico();
         topico.setTitulo(topicoDTO.getTitulo());
         topico.setMensagem(topicoDTO.getMensagem());
@@ -52,8 +50,16 @@ public class TopicoService {
         return topicoRepository.save(topico);
     }
 
-    public List<Topico> listarTopicos() {
-        return topicoRepository.findAll();
+    public Page<Topico> listarTopicos(String curso, Integer ano, Pageable pageable) {
+        if (curso != null && ano != null) {
+            return topicoRepository.findByCursoNomeAndDataCriacaoYear(curso, ano, pageable);
+        } else if (curso != null) {
+            return topicoRepository.findByCursoNome(curso, pageable);
+        } else if (ano != null) {
+            return topicoRepository.findByDataCriacaoYear(ano, pageable);
+        } else {
+            return topicoRepository.findAll(pageable);
+        }
     }
 
     public Optional<Topico> obterTopicoPorId(Long id) {
