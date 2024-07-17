@@ -13,7 +13,6 @@ import ChallengeAlura.ForumHub.dto.TopicoRequestDTO;
 import ChallengeAlura.ForumHub.dto.TopicoResponseDTO;
 import ChallengeAlura.ForumHub.repository.UsuarioRepository;
 import ChallengeAlura.ForumHub.repository.CursoRepository;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
