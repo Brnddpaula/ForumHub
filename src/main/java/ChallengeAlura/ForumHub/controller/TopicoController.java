@@ -1,18 +1,20 @@
 package ChallengeAlura.ForumHub.controller;
 
-import ChallengeAlura.ForumHub.dto.TopicoRequestDTO;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import ChallengeAlura.ForumHub.service.TopicoService;
+import ChallengeAlura.ForumHub.dto.TopicoRequestDTO;
+import ChallengeAlura.ForumHub.dto.TopicoResponseDTO;
 import ChallengeAlura.ForumHub.model.Topico;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,8 +41,8 @@ public class TopicoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Topico> obterTopico(@PathVariable Long id) {
-        Optional<Topico> topico = topicoService.obterTopicoPorId(id);
+    public ResponseEntity<TopicoResponseDTO> obterTopico(@PathVariable Long id) {
+        Optional<TopicoResponseDTO> topico = topicoService.obterTopicoPorId(id);
         return topico.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

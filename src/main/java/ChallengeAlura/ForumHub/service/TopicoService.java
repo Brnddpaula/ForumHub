@@ -10,6 +10,7 @@ import ChallengeAlura.ForumHub.model.Usuario;
 import ChallengeAlura.ForumHub.model.Curso;
 import ChallengeAlura.ForumHub.model.EstadoTopico;
 import ChallengeAlura.ForumHub.dto.TopicoRequestDTO;
+import ChallengeAlura.ForumHub.dto.TopicoResponseDTO;
 import ChallengeAlura.ForumHub.repository.UsuarioRepository;
 import ChallengeAlura.ForumHub.repository.CursoRepository;
 
@@ -62,8 +63,8 @@ public class TopicoService {
         }
     }
 
-    public Optional<Topico> obterTopicoPorId(Long id) {
-        return topicoRepository.findById(id);
+    public Optional<TopicoResponseDTO> obterTopicoPorId(Long id) {
+        return topicoRepository.findById(id).map(TopicoResponseDTO::new);
     }
 
     public Topico atualizarTopico(Long id, TopicoRequestDTO topicoAtualizadoDTO) {
